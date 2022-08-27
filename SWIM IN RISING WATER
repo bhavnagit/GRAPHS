@@ -1,0 +1,44 @@
+class Solution {
+     public class Pair implements Comparable<Pair>{
+        int row;
+        int col;
+        int msf;
+        Pair(int row, int col, int msf){
+            this.row= row;
+            this.col = col;
+            this.msf = msf;
+        }
+         @Override
+         public int compareTo(Pair o){
+             return this.msf - o.msf;
+         }
+    }
+    public int swimInWater(int[][] grid) {
+        PriorityQueue<Pair> pq = new PriorityQueue<>();
+        pq.add(new Pair(0,0,grid[0][0]));
+        boolean[][] vis = new boolean[grid.length][grid.length];
+        int[][] dirs = {{-1,0},{0,1},{1,0},{0,-1}};
+        
+        while(pq.size() >0){
+            Pair rem = pq.remove();
+            if(rem.row == grid.length-1 && rem.col == grid[0].length-1){
+                return rem.msf;
+            }
+            if(vis[rem.row][rem.col] == true){
+                continue;
+            }
+            vis[rem.row][rem.col] = true;
+            for(int i =0; i< dirs.length ; i++){
+                int rowdash = rem.row + dirs[i][0];
+                int coldash = rem.col + dirs[i][1];
+                if(rowdash <0 || coldash <0 || rowdash >= grid.length || coldash >= grid[0].length || vis[rowdash][coldash]){
+                    continue;
+                }
+                pq.add(new Pair(rowdash,coldash, Math.max(rem.msf,grid[rowdash][coldash])));
+            }
+        }
+                       return 0;
+    }
+   
+}
+Time Complexity = n^2logn  as logn^2 is same a logn.
